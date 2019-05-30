@@ -38,7 +38,7 @@ googleindex = {
 ```
 Then you can leverage the CFC via the injection DSL: `googleindex@googleindex`
 
-## Useage Example
+## Example
 
 To get started, instantiate the `GoogleIndex` component, passing in the file path to the `.JSON` file that contains the service account credentials:
 

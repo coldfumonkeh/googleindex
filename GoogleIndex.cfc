@@ -204,7 +204,7 @@ component accessors="true" {
     * 
     * @datetime The datetime value to convert into an epoch
     */
-    function generateEpochTime( required string datetime ){
+    private string function generateEpochTime( required string datetime ){
         var startDate = createdatetime( '1970','01','01','00','00','00' );
         var givenDateTime = dateConvert( 'local2utc', arguments.datetime );
         return dateDiff( 's', startDate, givenDateTime );
@@ -213,7 +213,7 @@ component accessors="true" {
     /**
     * Strips the comments and breaks from the private key
     */
-    private function getRealPK(){
+    private string function getRealPK(){
         var strPk = getCredentialsJSON()[ 'private_key' ];
         strPk = strPk.replaceAll( "-----END PRIVATE KEY-----", "" );
         strPk = strPk.replaceAll( "-----BEGIN PRIVATE KEY-----", "" );
@@ -222,13 +222,13 @@ component accessors="true" {
     }
 
     /**
-	* Encodes the JWT
-	* @payload The structure containing the data to encrypt
-	* @algorithm The algorithm to use when encoding. Defaults to 'RS256'
-	*/
-	private function encode( required struct payload ){
+    * Encodes the JWT
+    * @payload The structure containing the data to encrypt
+    * @algorithm The algorithm to use when encoding. Defaults to 'RS256'
+    */
+    private function encode( required struct payload ){
         var segments = '';
-		// Add Header - typ and alg fields
+        // Add Header - typ and alg fields
         segments = appendSegment( segments, {
             "typ" =  "JWT",
             "alg" = "RS256"
@@ -236,8 +236,8 @@ component accessors="true" {
         // Add payload
         segments = appendSegment( segments, arguments.payload );
         // Add signature
-		segments = listAppend( segments, signSHA256RSA( segments ), "." );
-		return segments;
+        segments = listAppend( segments, signSHA256RSA( segments ), "." );
+        return segments;
     }
 
     /**
@@ -256,36 +256,36 @@ component accessors="true" {
     }
 
     /**
-	* Decodes the given JWT
-	*/
-	private function decode( required string token ){
-		if( listLen( arguments.token, "." ) != 3 ){
-			throw( type="Invalid Token", message="Token should contain 3 segments" );
-		}
-		var header    = deserializeJSON( base64UrlDecode( listGetAt( arguments.token, 1, "." ) ) );
-		var payload   = deserializeJSON( base64UrlDecode( listGetAt( arguments.token, 2, "." ) ) );
-		var signature = listGetAt( arguments.token, 3, "." );
-		// Verify claims
-		if( structKeyExists( payload, "exp" ) ){
-			if( epochTimeToLocalDate( payload.exp ) < now() ){
-				throw( type="Invalid Token", message="Signature verification failed: Token expired" );
-			}
-		}
-		if( structKeyExists( payload, "nbf" ) && epochTimeToLocalDate( payload.nbf ) > now() ){
-			throw( type="Invalid Token", message="Signature verification failed: Token not yet active" );
-		}
-		if( structKeyExists( payload, "iss" ) && getCredentialsJSON()[ 'client_email' ] != "" && payload.iss != getCredentialsJSON()[ 'client_email' ] ){
-			throw( type="Invalid Token", message="Signature verification failed: Issuer does not match" );
-		}
-		if( structKeyExists( payload, "aud" ) && getTokenEndpoint() != "" && payload.aud != getTokenEndpoint() ){
-			throw( type="Invalid Token", message="Signature verification failed: Audience does not match" );
-		}
-		// Verify signature
-		var signInput = listGetAt( arguments.token, 1, "." ) & "." & listGetAt( arguments.token, 2,"." );
-		if( signature != signSHA256RSA( signInput, 'RSA256' ) ){
-			throw( type="Invalid Token", message="Signature verification failed: Invalid key" );
-		}
-		return payload;
-	}
+    * Decodes the given JWT
+    */
+    private function decode( required string token ){
+        if( listLen( arguments.token, "." ) != 3 ){
+            throw( type="Invalid Token", message="Token should contain 3 segments" );
+        }
+        var header    = deserializeJSON( base64UrlDecode( listGetAt( arguments.token, 1, "." ) ) );
+        var payload   = deserializeJSON( base64UrlDecode( listGetAt( arguments.token, 2, "." ) ) );
+        var signature = listGetAt( arguments.token, 3, "." );
+        // Verify claims
+        if( structKeyExists( payload, "exp" ) ){
+            if( epochTimeToLocalDate( payload.exp ) < now() ){
+                throw( type="Invalid Token", message="Signature verification failed: Token expired" );
+            }
+        }
+        if( structKeyExists( payload, "nbf" ) && epochTimeToLocalDate( payload.nbf ) > now() ){
+            throw( type="Invalid Token", message="Signature verification failed: Token not yet active" );
+        }
+        if( structKeyExists( payload, "iss" ) && getCredentialsJSON()[ 'client_email' ] != "" && payload.iss != getCredentialsJSON()[ 'client_email' ] ){
+            throw( type="Invalid Token", message="Signature verification failed: Issuer does not match" );
+        }
+        if( structKeyExists( payload, "aud" ) && getTokenEndpoint() != "" && payload.aud != getTokenEndpoint() ){
+            throw( type="Invalid Token", message="Signature verification failed: Audience does not match" );
+        }
+        // Verify signature
+        var signInput = listGetAt( arguments.token, 1, "." ) & "." & listGetAt( arguments.token, 2,"." );
+        if( signature != signSHA256RSA( signInput, 'RSA256' ) ){
+            throw( type="Invalid Token", message="Signature verification failed: Invalid key" );
+        }
+        return payload;
+    }
 
 }
