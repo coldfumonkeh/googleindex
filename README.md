@@ -30,7 +30,7 @@ This wrapper will be installed into a directory called `googleindex` and then ca
 This package also is a ColdBox module as well. The module can be configured by creating a `googleindex` configuration structure in your application configuration file( `config/Coldbox.cfc`) with the following settings:
 
 ```
-monkehTweet = {
+googleindex = {
     filePath			    =	'',
     tokenEndpoint		    =	'',
     notificationsEndpoint	=	''
