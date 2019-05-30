@@ -8,7 +8,7 @@
     "createPackageDirectory":"true",
     "homepage":"https://github.com/coldfumonkeh/googleindex",
     "documentation":"https://github.com/coldfumonkeh/googleindex",
-    "type":"projects",
+    "type":"modules",
     "repository":{
        "type":"git",
        "URL":"https://github.com/coldfumonkeh/googleindex.git"
