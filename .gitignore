@@ -1,0 +1,20 @@
+# Settings and Config
+.settings
+settings.xml
+.project
+
+credentials.json
+
+# Logs
+logs
+*.log
+
+# Local Environment
+VagrantFile
+WEB-INF
+.vagrant
+server.json
+
+# TESTING
+tests
+test
