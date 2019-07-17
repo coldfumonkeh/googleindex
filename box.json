@@ -10,63 +10,58 @@
     "documentation":"https://github.com/coldfumonkeh/googleindex",
     "type":"modules",
     "repository":{
-       "type":"git",
-       "URL":"https://github.com/coldfumonkeh/googleindex.git"
+        "type":"git",
+        "URL":"https://github.com/coldfumonkeh/googleindex.git"
     },
     "bugs":"https://github.com/coldfumonkeh/googleindex/issues",
     "shortDescription":"A ColdFusion CFC to interact with the Google Indexing API, including full OAuth2 flow for service accounts",
     "keywords":[
-       "Google",
-       "indexing",
-       "crawling",
-       "JWT",
-       "oauth2",
-       "api"
+        "Google",
+        "indexing",
+        "crawling",
+        "JWT",
+        "oauth2",
+        "api"
     ],
     "scripts":{
-       "postVersion":"package set location='coldfumonkeh/googleindex#v`package version`'",
-       "onRelease":"publish",
-       "postPublish":"!git push --follow-tags"
+        "postVersion":"package set location='coldfumonkeh/googleindex#v`package version`'",
+        "onRelease":"publish",
+        "postPublish":"!git push --follow-tags"
     },
     "private":"false",
     "ignore":[
-       "**/.*",
-       "test",
-       "tests"
+        "**/.*",
+        "test",
+        "tests"
     ],
     "testbox":{
-       "runner":[
-          {
-             "default":""
-          }
-       ],
-       "labels":[
- 
-       ],
-       "reporter":"",
-       "reporterResults":"",
-       "bundles":[
-          ""
-       ],
-       "directory":{
-          "mapping":"",
-          "recurse":true
-       },
-       "watchers":[
- 
-       ],
-       "notify":{
-          "emails":[
- 
-          ],
-          "growl":"",
-          "URL":""
-       }
+        "runner":[
+            {
+                "default":""
+            }
+        ],
+        "labels":[],
+        "reporter":"",
+        "reporterResults":"",
+        "bundles":[
+            ""
+        ],
+        "directory":{
+            "mapping":"",
+            "recurse":true
+        },
+        "watchers":[],
+        "notify":{
+            "emails":[],
+            "growl":"",
+            "URL":""
+        }
     },
-    "dependencies":{
-       "testbox":"^2.5.0+107"
-    },
+    "dependencies":{},
     "installPaths":{
-       "testbox":"testbox"
+        "testbox":"testbox/"
+    },
+    "devDependencies":{
+        "testbox":"^3.0.0-snapshot"
     }
- }
+}

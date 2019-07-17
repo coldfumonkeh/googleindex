@@ -18,3 +18,4 @@ server.json
 # TESTING
 tests
 test
+testbox/**
