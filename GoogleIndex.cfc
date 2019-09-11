@@ -54,7 +54,7 @@ component accessors="true" {
     /**
     * Returns metadata information about the notification for the given url
     * 
-    * @@url The fully-qualified location of the item that you want to fetch metadata for
+    * @url The fully-qualified location of the item that you want to fetch metadata for
     */
     public struct function getStatus( required string url ){
         var encodedURL = urlEncodedFormat( arguments.url );
