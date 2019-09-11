@@ -124,7 +124,7 @@ component accessors="true" {
         var assertionTime = dateAdd( 's', 600, dtGMT );
         var expiryTime    = dateAdd( 'n', 60, assertionTime );
         var credJSON      = getCredentialsJSON();
-        var timeZoneInfo  = GetTimeZoneInfo();
+        
         var payload       = {
             'iss'  : credJSON[ 'client_email' ],
             'scope': 'https://www.googleapis.com/auth/indexing',
