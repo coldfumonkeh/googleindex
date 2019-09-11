@@ -54,7 +54,7 @@ component accessors="true" {
     /**
     * Returns metadata information about the notification for the given url
     * 
-    * @@url The fully-qualified location of the item that you want to fetch metadata for
+    * @url The fully-qualified location of the item that you want to fetch metadata for
     */
     public struct function getStatus( required string url ){
         var encodedURL = urlEncodedFormat( arguments.url );
@@ -107,11 +107,20 @@ component accessors="true" {
             'type': arguments.type
         };
         var result = '';
-        cfhttp( url='#getNotificationsEndpoint()#:publish', method='POST', result='result' ){
-            cfhttpparam( type='header', name='Authorization', value='#buildAuthHeader()#' );
-            cfhttpparam( type='header', name='Content-Type', value='application/json' );
-            cfhttpparam( type='body', value='#serializeJSON( stuBodyContent )#' );
+        if 	( getEngine() == "LUCEE" ) {
+            cfhttp( url='#getNotificationsEndpoint()#:publish', method='POST', result='result', encodeurl=false ){
+                cfhttpparam( type='header', name='Authorization', value='#buildAuthHeader()#' );
+                cfhttpparam( type='header', name='Content-Type', value='application/json' );
+                cfhttpparam( type='body', value='#serializeJSON( stuBodyContent )#' );
+            }
+        } else {
+            cfhttp( url='#getNotificationsEndpoint()#:publish', method='POST', result='result' ){
+                cfhttpparam( type='header', name='Authorization', value='#buildAuthHeader()#' );
+                cfhttpparam( type='header', name='Content-Type', value='application/json' );
+                cfhttpparam( type='body', value='#serializeJSON( stuBodyContent )#' );
+            }
         }
+
         return deserializeJSON( result[ 'fileContent' ] );
     }
 
@@ -124,7 +133,7 @@ component accessors="true" {
         var assertionTime = dateAdd( 's', 600, dtGMT );
         var expiryTime    = dateAdd( 'n', 60, assertionTime );
         var credJSON      = getCredentialsJSON();
-        var timeZoneInfo  = GetTimeZoneInfo();
+        
         var payload       = {
             'iss'  : credJSON[ 'client_email' ],
             'scope': 'https://www.googleapis.com/auth/indexing',
@@ -290,5 +299,19 @@ component accessors="true" {
         }
         return payload;
     }
+
+
+	/**
+	* Get the current CFML Engine
+	*/
+	private string function getEngine() {
+		var engine = "ADOBE";
+
+		if ( server.coldfusion.productname eq "Lucee" ){
+			engine = "LUCEE";
+		}
+
+		return engine;
+	}
 
 }
