@@ -58,6 +58,7 @@ component accessors="true" {
     */
     public struct function getStatus( required string url ){
         var encodedURL = urlEncodedFormat( arguments.url );
+        var result = '';
         cfhttp( url='#getNotificationsEndpoint()#/metadata?url=#encodedURL#', method='GET', result='result' ){
             cfhttpparam( type='header', name='Authorization', value='#buildAuthHeader()#' );
         }
@@ -69,6 +70,7 @@ component accessors="true" {
     */
     public struct function getAccessToken(){
         var JWTPayload = buildJWT();
+        var result = '';
         cfhttp( url=getTokenEndpoint(), method='POST', result='result' ){
             cfhttpparam( type='formfield', name='grant_type', value='urn:ietf:params:oauth:grant-type:jwt-bearer' );
             cfhttpparam( type='formfield', name='assertion', value=JWTPayload );
@@ -104,6 +106,7 @@ component accessors="true" {
             'url' : arguments.url,
             'type': arguments.type
         };
+        var result = '';
         cfhttp( url='#getNotificationsEndpoint()#:publish', method='POST', result='result' ){
             cfhttpparam( type='header', name='Authorization', value='#buildAuthHeader()#' );
             cfhttpparam( type='header', name='Content-Type', value='application/json' );
