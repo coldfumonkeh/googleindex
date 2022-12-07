@@ -120,17 +120,13 @@ component accessors="true" {
     */
     private string function buildJWT(){
         var currDateTime  = now();
-        var dtGMT         = dateAdd( 's', getTimeZoneInfo().UTCTotalOffset, currDateTime );
-        var assertionTime = dateAdd( 's', 600, dtGMT );
-        var expiryTime    = dateAdd( 'n', 60, assertionTime );
         var credJSON      = getCredentialsJSON();
-        var timeZoneInfo  = GetTimeZoneInfo();
         var payload       = {
             'iss'  : credJSON[ 'client_email' ],
             'scope': 'https://www.googleapis.com/auth/indexing',
             'aud'  : getTokenEndpoint(),
-            'exp'  : generateEpochTime( expiryTime ),
-            'iat'  : generateEpochTime( assertionTime )
+            'exp'  : generateEpochTime( dateAdd( 'h', 1, currDateTime ) ),
+            'iat'  : generateEpochTime( currDateTime )
         };
         return encode( payload = payload );
     }
